@@ -14,8 +14,10 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '11'
+      - name: Set up distribution
+        run: echo "distribution: 'dist'" >> $GITHUB_ENV
       - name: Build with Gradle
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleDebug -Pdistribution=$distribution
       - name: Upload APK
         uses: actions/upload-artifact@v2
         with:
