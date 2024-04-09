@@ -15,4 +15,6 @@ jobs:
       - name: Run tests
         run: ./gradlew test
       - name: build java-hesap-makinesi
-        run: ./gradlew assemble
+        run: ./gradlew assemble   
+
+        
