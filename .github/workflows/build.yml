@@ -18,28 +18,18 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
 
-      - name: Build with Gradle
-        run: |
-          gradle assembleRelease
+      - name: Compile Java files
+        run: javac DosyaAdi.java
 
-
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
+      - name: Create APK file
+        run: jar cf DosyaAdi.jar DosyaAdi.class
 
       - name: Upload APK
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: app/build/outputs/apk/release/app-release-unsigned.apk
-          asset_name: java-hesap-makinesi.apk
-          asset_content_type: application/vnd.android.package-archive
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: DosyaAdi.jar
+          asset_name: DosyaAdi.jar
+          asset_content_type: application/java-archive
