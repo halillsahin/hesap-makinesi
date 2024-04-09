@@ -19,7 +19,7 @@ jobs:
           java-version: '11'
 
       - name: Compile Java files
-        run: javac DosyaAdi.java
+        run: javac Hesapmakinesi.java
 
       - name: Create APK file
         run: jar cf DosyaAdi.jar DosyaAdi.class
