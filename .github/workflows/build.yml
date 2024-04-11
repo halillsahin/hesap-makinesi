@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
@@ -18,35 +18,33 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
 
-      - name: Upload JAR files
+      - name: Install APKTool
+        run: |
+          sudo apt-get install -y wget tar openjdk-11-jdk
+          wget https://github.com/iBotPeaches/Apktool/releases/download/v2.6.0/apktool_2.6.0.jar -O apktool.jar
+          echo '#!/bin/bash\njava -jar /usr/local/bin/apktool.jar "$@"' > apktool
+          chmod +x apktool
+          sudo mv apktool /usr/local/bin/
+          sudo mv apktool.jar /usr/local/bin/
+
+      - name: Convert JAR to APK
+        run: |
+          apktool d .github/workflows/Hesapmakinesi.jar -o .github/workflows/apk
+       
+          
+          
+          
+          
+      - name: Upload APK file
         uses: actions/upload-artifact@v2
         with:
-          name: Hesapmakinesi.jar
-          path: |
-            .github/workflows/Hesapmakinesi.jar
-            .github/workflows/Hesapmakinesi.class
-            .github/workflows/Hesapmakinesi$1.class
-            .github/workflows/Hesapmakinesi$2.class
-            .github/workflows/Hesapmakinesi$3.class
-            .github/workflows/Hesapmakinesi$4.class
-            .github/workflows/Hesapmakinesi$5.class
-            .github/workflows/Hesapmakinesi$6.class
-            .github/workflows/Hesapmakinesi$7.class
-            .github/workflows/Hesapmakinesi$8.class
-            .github/workflows/Hesapmakinesi$9.class
-            .github/workflows/Hesapmakinesi$10.class
-            .github/workflows/Hesapmakinesi$11.class
-            .github/workflows/Hesapmakinesi$12.class
-            .github/workflows/Hesapmakinesi$13.class
-            .github/workflows/Hesapmakinesi$14.class
-            .github/workflows/Hesapmakinesi$15.class
-            .github/workflows/Hesapmakinesi$16.class
-            .github/workflows/Hesapmakinesi$17.class
+          name: apk
+          path: .github/workflows/apk
 
-      - name: Download JAR files
+      - name: Download APK file
         uses: actions/download-artifact@v2
         with:
-          name: Hesapmakinesi.jar
+          name: apk
 
       - name: Build APK
         run: |
